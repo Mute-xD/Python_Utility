@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>正则表达式</title>
+        <style>
+/* From extension zhuangtongfa.material-theme */
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body {
+  box-sizing: border-box;
+  min-width: 200px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote {
+  background-color: initial;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  color: initial;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code {
+  color: inherit;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre code {
+  color: initial;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code > div {
+  background: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table th, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table td {
+  border: 1px solid rgba(171, 178, 191, 0.5) !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body.showEditorSelection .code-active-line:before {
+  border-left: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body.showEditorSelection .code-line:hover:before {
+  border-left: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body.showEditorSelection .code-line .code-line:hover:before {
+  border-left: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body p, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+/* Generated from 'node_modules/github-markdown-css/github-markdown.css' */
+@font-face {
+  font-family: octicons-link;
+  src: url(data:font/woff;charset=utf-8;base64,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) format("woff");
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
+  color: #abb2bf;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  background: #282c34;
+  padding-top: 20px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c {
+  color: #6a737d;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s .pl-v {
+  color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-e, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-en {
+  color: #6f42c1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-smi, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s .pl-s1 {
+  color: #24292e;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ent {
+  color: #22863a;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-k {
+  color: #d73a49;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-pds, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s .pl-pse .pl-s1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-cce, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-sre, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-sra {
+  color: #032f62;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-v, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-smw {
+  color: #e36209;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-bu {
+  color: #b31d28;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ii {
+  color: #fafbfc;
+  background-color: #b31d28;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c2 {
+  color: #fafbfc;
+  background-color: #d73a49;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c2::before {
+  content: "^M";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-cce {
+  font-weight: bold;
+  color: #22863a;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ml {
+  color: #735c0f;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mh, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mh .pl-en, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ms {
+  font-weight: bold;
+  color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mi {
+  font-style: italic;
+  color: #24292e;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mb {
+  font-weight: bold;
+  color: #24292e;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-md {
+  color: #b31d28;
+  background-color: #ffeef0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mi1 {
+  color: #22863a;
+  background-color: #f0fff4;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mc {
+  color: #e36209;
+  background-color: #ffebda;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mi2 {
+  color: #f6f8fa;
+  background-color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mdr {
+  font-weight: bold;
+  color: #6f42c1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ba {
+  color: #586069;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sg {
+  color: #959da5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-corl {
+  text-decoration: underline;
+  color: #032f62;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .octicon {
+  display: inline-block;
+  vertical-align: text-top;
+  fill: currentColor;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a {
+  background-color: transparent;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:active, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:hover {
+  outline-width: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body strong {
+  font-weight: inherit;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body strong {
+  font-weight: bolder;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img {
+  border-style: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body kbd, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body input {
+  font: inherit;
+  margin: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body input {
+  overflow: visible;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body [type=checkbox] {
+  box-sizing: border-box;
+  padding: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body * {
+  box-sizing: border-box;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body input {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a {
+  color: #528bff;
+  text-decoration: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:hover {
+  text-decoration: underline;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body strong {
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #dfe2e5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr::before {
+  display: table;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body td, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body th {
+  padding: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 {
+  font-size: 32px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  font-size: 12px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote {
+  margin: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ol {
+  list-style-type: lower-roman;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ul ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ol ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ul ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dd {
+  margin-left: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .octicon {
+  vertical-align: text-bottom;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-0 {
+  padding-left: 0 !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-1 {
+  padding-left: 4px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-2 {
+  padding-left: 8px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-3 {
+  padding-left: 16px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-4 {
+  padding-left: 24px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-5 {
+  padding-left: 32px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-6 {
+  padding-left: 40px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body::before {
+  display: table;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body > *:first-child {
+  margin-top: 0 !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body > *:last-child {
+  margin-bottom: 0 !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .anchor {
+  float: left;
+  padding-right: 4px;
+  margin-left: -20px;
+  line-height: 1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .anchor:focus {
+  outline: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body p, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  height: 0.25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: #e1e4e8;
+  border: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote {
+  /* padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #dfe2e5; */
+  padding: 8.5px 17px;
+  margin: 1.5em 0;
+  font-size: inherit;
+  color: #7c879c;
+  border-color: #4b5362;
+  border-width: 4px;
+  border-left: 5px solid #4b5362;
+  background: transparent;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote > :first-child {
+  margin-top: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #444d56;
+  vertical-align: middle;
+  background-color: #fafbfc;
+  border: solid 1px #c6cbd1;
+  border-bottom-color: #959da5;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #959da5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #f0f0f0;
+  border-bottom: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 .octicon-link {
+  color: #1b1f23;
+  vertical-align: middle;
+  visibility: hidden;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6:hover .anchor {
+  text-decoration: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6:hover .anchor .octicon-link {
+  visibility: visible;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.5em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3 {
+  font-size: 1.25em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4 {
+  font-size: 1em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5 {
+  font-size: 0.875em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  font-size: 0.85em;
+  color: #6a737d;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol {
+  padding-left: 2em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body li {
+  word-wrap: break-all;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body li > p {
+  margin-top: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body li + li {
+  margin-top: 0.25em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl {
+  padding: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table th {
+  font-weight: 700;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table th, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table td {
+  padding: 6px 13px;
+  /* border: 1px solid #dfe2e5; */
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table tr {
+  /* background-color: #fff; */
+  /* border-top: 1px solid #c6cbd1; */
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table tr:nth-child(2n) {
+  /* background-color: #f6f8fa; */
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img {
+  max-width: 100%;
+  box-sizing: content-box;
+  display: inline-block;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img[align=right] {
+  padding-left: 20px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img[align=left] {
+  padding-right: 20px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: #3a3f4b;
+  border-radius: 3px;
+  color: white;
+  margin: 0 1px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  word-wrap: normal;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre > code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .highlight {
+  margin-bottom: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .highlight pre, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  /* background-color: #f6f8fa; */
+  border-radius: 3px;
+  background-color: #31363f;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre code {
+  display: inline;
+  max-width: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+  color: #abb2bf;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .full-commit .btn-outline:not(:disabled):hover {
+  color: #005cc5;
+  border-color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  color: #444d56;
+  vertical-align: middle;
+  background-color: #fafbfc;
+  border: solid 1px #d1d5da;
+  border-bottom-color: #c6cbd1;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #c6cbd1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body :checked + .radio-label {
+  position: relative;
+  z-index: 1;
+  border-color: #0366d6;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .task-list-item {
+  list-style-type: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .task-list-item + .task-list-item {
+  margin-top: 3px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .task-list-item input {
+  margin: 0 0.2em 0.25em -1.6em;
+  vertical-align: middle;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  border-bottom-color: #eee;
+}
+
+/*
+
+Atom One Dark by Daniel Gamage
+Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
+
+base:    #282c34
+mono-1:  #abb2bf
+mono-2:  #818896
+mono-3:  #5c6370
+hue-1:   #56b6c2
+hue-2:   #61aeee
+hue-3:   #c678dd
+hue-4:   #98c379
+hue-5:   #e06c75
+hue-5-2: #be5046
+hue-6:   #d19a66
+hue-6-2: #e6c07b
+
+*/
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #abb2bf;
+  background: #282c34;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-comment,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-doctag,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-keyword,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-formula {
+  color: #c678dd;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-section,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-name,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-tag,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-deletion,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-subst {
+  color: #e06c75;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-literal {
+  color: #56b6c2;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-string,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-regexp,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-addition,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-attribute,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-meta-string {
+  color: #98c379;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-built_in,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-class .hljs-title {
+  color: #e6c07b;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-attr,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-variable,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-template-variable,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-type,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-class,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-attr,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-pseudo,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-number {
+  color: #d19a66;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-symbol,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-bullet,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-link,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-meta,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-id,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-title {
+  color: #61aeee;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-emphasis {
+  font-style: italic;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-strong {
+  font-weight: bold;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-link {
+  text-decoration: underline;
+}
+
+</style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
+    </head>
+    <body class="vscode-light">
+        <h1 id="正则表达式">正则表达式</h1>
+<p>此段为markdown，建议在编辑器里面查看</p>
+<h2 id="概述">概述</h2>
+<p><code>^[0-9]+abc$</code><br>
+<code>^</code> 为匹配输入字符串的开始位置<br>
+[0-9]+ 匹配多个数字， [0-9] 匹配单个数字， + 匹配一个或多个</p>
+<p>我们在写用户注册表单时，只允许用户名包含字符、数字、下划线和连接字符(-)，
+并设置用户名的长度，我们就可以使用以下正则表达式来设定<br>
+<code>^[a-z0-9_-]{3-15}$</code><br>
+匹配包含 a-z 0-9 _- 的 长度为3-15的字符串<br>
+例如： mute mutexd1 , 不可行： mutexD m1 mute@</p>
+<h2 id="语法">语法</h2>
+<p><code>mutex+d</code> 可以匹配 mutexd mutexxd mutexxxxxxd  + 号代表前面的字符必须至少出现一次<br>
+<code>mutex*d</code> 可以匹配 muted mutexxd mutexxxxxxxd  * 号代表前面的字符可以不出现，也可以出现一次或者多次（0次、或1次、或多次）<br>
+<code>colou?r</code>  可以匹配 color colour ? 问号代表前面的字符最多只可以出现一次（0次、或1次）</p>
+<p>正则表达式是由普通字符（例如字符 a 到 z）以及特殊字符（称为&quot;元字符&quot;）组成的文字模式。
+模式描述在搜索文本时要匹配的一个或多个字符串。
+正则表达式作为一个模板，将某个字符模式与所搜索的字符串进行匹配</p>
+<p><strong>普通字符</strong><br>
+普通字符包括没有显式指定为元字符的所有可打印和不可打印字符。
+这包括所有大写和小写字母、所有数字、所有标点符号和一些其他符号<br>
+<strong>非打印字符</strong><br>
+非打印字符也可以是正则表达式的组成部分，如下表所示</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\cx</code></td>
+<td>匹配由x指明的控制字符。例如， \cM 匹配一个 Ctrl-M 或回车符。x 的值必须为 A-Z 或 a-z 之一。否则，将 c 视为一个原义的 'c' 字符</td>
+</tr>
+<tr>
+<td><code>\f</code></td>
+<td>匹配一个换页符。等价于 \x0c 和 \cL</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>匹配一个换行符。等价于 \x0a 和 \cJ</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td>匹配一个回车符。等价于 \x0d 和 \cM</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>匹配任何空白字符，包括空格、制表符、换页符等等。等价于 <code>[\f\n\r\t\v]</code>。注意 Unicode 正则表达式会匹配全角空格符</td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td>匹配任何非空白字符。等价于 <code>[^\f\n\r\t\v]</code></td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>匹配一个制表符。等价于 \x09 和 \cI</td>
+</tr>
+<tr>
+<td><code>\v</code></td>
+<td>匹配一个垂直制表符。等价于 \x0b 和 \cK</td>
+</tr>
+</tbody>
+</table>
+<p><strong>特殊字符</strong><br>
+特殊字符就是一些有特殊含义的字符，如上面说的 <code>mutex*d</code> 中的 <code>*</code>，
+简单的说就是表示任何字符串的意思。如果要查找字符串中的 <code>*</code> 符号，则需要对 <code>*</code> 进行转义，
+即在其前加一个 <code>反斜杠</code> 即 <code>mute\*xd</code> 匹配 <code>mute*xd</code></p>
+<p>许多元字符要求在试图匹配它们时特别对待。若要匹配这些特殊字符，必须首先使字符&quot;转义&quot;，
+即，将反斜杠字符<code>反斜杠</code>放在它们前面。下表列出了正则表达式中的特殊字符</p>
+<table>
+<thead>
+<tr>
+<th>特别字符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>匹配输入字符串的结尾位置。如果设置了正则对象的多行匹配属性，则 $ 也匹配 '\n' 或 '\r'。要匹配 $ 字符本身，请使用<code>反斜杠$</code></td>
+</tr>
+<tr>
+<td><code>( )</code></td>
+<td>标记一个子表达式的开始和结束位置。子表达式可以获取供以后使用。要匹配这些字符，请使用<code>反斜杠（</code>和<code>反斜杠）</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>匹配前面的子表达式零次或多次</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>匹配前面的子表达式一次或多次</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>匹配除换行符 \n 之外的任何单字符</td>
+</tr>
+<tr>
+<td><code>[</code></td>
+<td>标记一个中括号表达式的开始</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>匹配前面的子表达式零次或一次，或指明一个非贪婪限定符</td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td>将下一个字符标记为或特殊字符、或原义字符、或向后引用、或八进制转义符</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>匹配输入字符串的开始位置，除非在方括号表达式中使用，当该符号在方括号表达式中使用时，表示不接受该方括号表达式中的字符集合</td>
+</tr>
+<tr>
+<td><code>{</code></td>
+<td>标记限定符表达式的开始</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>指明两项之间的一个选择</td>
+</tr>
+</tbody>
+</table>
+<p><strong>限定符</strong><br>
+限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配<br>
+有<code> *  +  ?  {n}  {n,}  {n,m}</code> 共6种</p>
+<table>
+<thead>
+<tr>
+<th>特别字符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>匹配前面的子表达式零次或多次。例如，<code>zo*</code> 能匹配 &quot;z&quot; 以及 &quot;zoo&quot;。* 等价于<code>{0,}</code></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>匹配前面的子表达式一次或多次。例如，<code>zo+</code> 能匹配 &quot;zo&quot; 以及 &quot;zoo&quot;，但不能匹配 &quot;z&quot;。+ 等价于 <code>{1,}</code></td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>匹配前面的子表达式零次或一次。例如，<code>do(es)?</code> 可以匹配 &quot;do&quot; 、 &quot;does&quot; 中的 &quot;does&quot; 、 &quot;doxy&quot; 中的 &quot;do&quot;. ?等价于 <code>{0,1}</code></td>
+</tr>
+<tr>
+<td><code>{n}</code></td>
+<td>n 是一个非负整数。匹配确定的 n 次。例如，<code>o{2}</code> 不能匹配 &quot;Bob&quot; 中的 'o'，但是能匹配 &quot;food&quot; 中的两个 o</td>
+</tr>
+<tr>
+<td><code>{n,}</code></td>
+<td>n 是一个非负整数。至少匹配n 次。例如，<code>o{2,}</code> 不能匹配 &quot;Bob&quot; 中的 'o'，但能匹配 &quot;foooood&quot; 中的所有 o。'o{1,}' 等价于 'o+'。'o{0,}' 则等价于 'o*'</td>
+</tr>
+<tr>
+<td><code>{n,m}</code></td>
+<td>m 和 n 均为非负整数，其中n &lt;= m。最少匹配 n 次且最多匹配 m 次。例如，<code>o{1,3}</code> 将匹配 &quot;fooooood&quot; 中的前三个 o。<code>o{0,1}</code> 等价于 'o?'。请注意在逗号和两个数之间不能有空格</td>
+</tr>
+</tbody>
+</table>
+<p><code>/[1-9][0-9]*/</code><br>
+此正则表达式匹配一个正整数，<code>[1-9]</code>设置第一个数字不是 0，<code>[0-9]*</code> 表示任意多个数字<br>
+<code>/[0-9]{1,2}/</code><br>
+匹配0~99 的两位数 但只能匹配两位数字，而且可以匹配 0、00、01、10 99 的章节编号仍只匹配开头两位数字<br>
+<code>/[1-9][0-9]?/</code> or <code>/[1-9][0-9]{0,1}/</code> 上面的改进版<br>
+<code>*</code>和 <code>+</code> 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个 ? 就可以实现非贪婪或最小匹配</p>
+<p>匹配 <code>&lt;h1&gt;Mute-Tiny Blog&lt;/h1&gt;</code><br>
+贪婪： <code>/&lt;.*&gt;/</code> 将匹配整个字符串<br>
+非贪婪： <code>/&lt;.*?&gt;/</code> or <code>/&lt;\w+?&gt;/</code> 匹配<code>&lt;h1&gt;</code><br>
+通过在 *、+ 或 ? 限定符之后放置 ?，该表达式从&quot;贪婪&quot;表达式转换为&quot;非贪婪&quot;表达式或者最小匹配</p>
+<p><strong>定位符</strong><br>
+定位符使您能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^</code></td>
+<td>匹配输入字符串开始的位置。如果设置了 RegExp 对象的 Multiline 属性，^ 还会与 \n 或 \r 之后的位置匹配</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>匹配输入字符串结尾的位置。如果设置了 RegExp 对象的 Multiline 属性，$ 还会与 \n 或 \r 之前的位置匹配</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>匹配一个单词边界，即字与空格间的位置</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>非单词边界匹配</td>
+</tr>
+</tbody>
+</table>
+<p><code>/^Chapter [1-9][0-9]{0,1}$/</code><br>
+章节标题不仅出现行的开始处，而且它还是该行中仅有的文本。它即出现在行首又出现在同一行的结尾，通过创建只匹配一行文本的开始和结尾的正则表达式，就可做到这一点<br>
+<code>/\bCha/</code> 和 <code>/ter\b/</code> 匹配单词 Chapter 的开头三个字符 和 结尾三个字符<br>
+<code>/\Bapt/</code> 表达式匹配 Chapter 中的字符串 apt，但不匹配 aptitude 中的字符串 apt</p>
+<p><strong>反向引用</strong><br>
+对一个正则表达式模式或部分模式两边添加圆括号将导致相关匹配存储到一个临时缓冲区中，所捕获的每个子匹配都按照在正则表达式模式中从左到右出现的顺序存储。缓冲区编号从 1 开始，最多可存储 99 个捕获的子表达式。每个缓冲区都可以使用 \n 访问，其中 n 为一个标识特定缓冲区的一位或两位十进制数<br>
+可以使用非捕获元字符 ?:、?= 或 ?! 来重写捕获，忽略对相关匹配的保存</p>
+<p>反向引用的最简单的、最有用的应用之一，是提供查找文本中两个相同的相邻单词的匹配项的能力<br>
+<code>/\b([a-z]+) \1\b/ig</code></p>
+<ul>
+<li>[a-z]+ 指定的，包括一个或多个字母</li>
+<li>正则表达式的第二部分是对以前捕获的子匹配项的引用</li>
+<li>\1 指定第一个子匹配项</li>
+<li>单词边界元字符 /b 确保只检测整个单词</li>
+<li>正则表达式后面的全局标记 <code>g</code> 指定将该表达式应用到输入字符串中能够查找到的尽可能多的匹配</li>
+<li>表达式的结尾处的不区分大小写 <code>i</code> 标记指定不区分大小写</li>
+<li>多行标记指定换行符的两边可能出现潜在的匹配<br>
+I`m Mute, <strong>a a</strong> noob.</li>
+</ul>
+<p><code>/(\w+):\/\/([^/:]+)(:\d*)?([^# ]*)/</code></p>
+<ul>
+<li>第一个括号子表达式捕获 Web 地址的协议部分。该子表达式匹配在冒号和两个正斜杠前面的任何单词</li>
+<li>第二个括号子表达式捕获地址的域地址部分。子表达式匹配非 : 和 / 之后的一个或多个字符</li>
+<li>第三个括号子表达式捕获端口号（如果指定了的话）。该子表达式匹配冒号后面的零个或多个数字。只能重复一次该子表达式</li>
+<li>第四个括号子表达式捕获 Web 地址指定的路径和 / 或页信息。该子表达式能匹配不包括 # 或空格字符的任何字符序列</li>
+</ul>
+<h2 id="元字符">元字符</h2>
+<p>下表包含了元字符的完整列表以及它们在正则表达式上下文中的行为</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\</code></td>
+<td>将下一个字符标记为一个特殊字符、或一个原义字符、或一个 向后引用、或一个八进制转义符。例如，'n' 匹配字符 &quot;n&quot;。'\n' 匹配一个换行符</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>匹配输入字符串的开始位置。如果设置了 RegExp 对象的 Multiline 属性，^ 也匹配 '\n' 或 '\r' 之后的位置</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>匹配输入字符串的结束位置。如果设置了RegExp 对象的 Multiline 属性，$ 也匹配 '\n' 或 '\r' 之前的位置</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>匹配前面的子表达式零次或多次</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>匹配前面的子表达式一次或多次</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>匹配前面的子表达式零次或一次</td>
+</tr>
+<tr>
+<td><code>{n}</code></td>
+<td>n 是一个非负整数。匹配确定的 n 次</td>
+</tr>
+<tr>
+<td><code>{n,}</code></td>
+<td>n 是一个非负整数。至少匹配 n 次</td>
+</tr>
+<tr>
+<td><code>{n,m}</code></td>
+<td>m 和 n 均为非负整数，其中n &lt;= m。最少匹配 n 次且最多匹配 m 次</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>当该字符紧跟在任何一个其他限制符 (*, +, ?, {n}, {n,}, {n,m}) 后面时，匹配模式是非贪婪的。非贪婪模式尽可能少的匹配所搜索的字符串，而默认的贪婪模式则尽可能多的匹配所搜索的字符串</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>匹配除换行符（\n、\r）之外的任何单个字符</td>
+</tr>
+<tr>
+<td><code>(pattern)</code></td>
+<td>匹配 pattern 并获取这一匹配</td>
+</tr>
+<tr>
+<td><code>(?:pattern)</code></td>
+<td>匹配 pattern 但不获取匹配结果，也就是说这是一个非获取匹配，不进行存储供以后使用</td>
+</tr>
+<tr>
+<td><code>(?=pattern)</code></td>
+<td>正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用</td>
+</tr>
+<tr>
+<td><code>(?!pattern)</code></td>
+<td>正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用</td>
+</tr>
+<tr>
+<td><code>(?&lt;=pattern)</code></td>
+<td>反向肯定预查，与正向肯定预查类似，只是方向相反</td>
+</tr>
+<tr>
+<td><code>(?&lt;!pattern)</code></td>
+<td>反向否定预查，与正向否定预查类似，只是方向相反</td>
+</tr>
+<tr>
+<td><code>x丨y</code></td>
+<td>匹配 x 或 y</td>
+</tr>
+<tr>
+<td><code>[xyz]</code></td>
+<td>字符集合。匹配所包含的任意一个字符</td>
+</tr>
+<tr>
+<td><code>[^xyz]</code></td>
+<td>负值字符集合。匹配未包含的任意字符</td>
+</tr>
+<tr>
+<td><code>[a-z]</code></td>
+<td>字符范围。匹配指定范围内的任意字符</td>
+</tr>
+<tr>
+<td><code>[^a-z]</code></td>
+<td>负值字符范围。匹配任何不在指定范围内的任意字符</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>匹配一个单词边界，也就是指单词和空格间的位置</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td>匹配非单词边界</td>
+</tr>
+<tr>
+<td><code>\cx</code></td>
+<td>匹配由 x 指明的控制字符</td>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td>匹配一个数字字符</td>
+</tr>
+<tr>
+<td><code>\D</code></td>
+<td>匹配一个非数字字符</td>
+</tr>
+<tr>
+<td><code>\f</code></td>
+<td>匹配一个换页符</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>匹配一个换行符</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td>匹配一个回车符</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>匹配任何空白字符，包括空格、制表符、换页符等等</td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td>匹配任何非空白字符</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>匹配一个制表符</td>
+</tr>
+<tr>
+<td><code>\v</code></td>
+<td>匹配一个垂直制表符</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td>匹配字母、数字、下划线</td>
+</tr>
+<tr>
+<td><code>\W</code></td>
+<td>匹配非字母、数字、下划线</td>
+</tr>
+<tr>
+<td><code>\xn</code></td>
+<td>匹配 n，其中 n 为十六进制转义值。十六进制转义值必须为确定的两个数字长</td>
+</tr>
+<tr>
+<td><code>\num</code></td>
+<td>匹配 num，其中 num 是一个正整数。对所获取的匹配的引用</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>标识一个八进制转义值或一个向后引用。如果 \n 之前至少 n 个获取的子表达式，则 n 为向后引用。否则，如果 n 为八进制数字 (0-7)，则 n 为一个八进制转义值</td>
+</tr>
+<tr>
+<td><code>\nm</code></td>
+<td>标识一个八进制转义值或一个向后引用。如果 \nm 之前至少有 nm 个获得子表达式，则 nm 为向后引用。如果 \nm 之前至少有 n 个获取，则 n 为一个后跟文字 m 的向后引用</td>
+</tr>
+<tr>
+<td><code>\nml</code></td>
+<td>如果 n 为八进制数字 (0-3)，且 m 和 l 均为八进制数字 (0-7)，则匹配八进制转义值 nml</td>
+</tr>
+<tr>
+<td><code>\un</code></td>
+<td>匹配 n，其中 n 是一个用四个十六进制数字表示的 Unicode 字符。例如， \u00A9 匹配版权符号 (?)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="优先级">优先级</h2>
+<p>正则表达式从左到右进行计算，并遵循优先级顺序，这与算术表达式非常类似<br>
+相同优先级的从左到右进行运算，不同优先级的运算先高后低。下表从最高到最低说明了各种正则表达式运算符的优先级顺序</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\</code></td>
+<td>转义符</td>
+</tr>
+<tr>
+<td><code>(), (?:), (?=), []</code></td>
+<td>圆括号和方括号</td>
+</tr>
+<tr>
+<td><code>*, +, ?, {n}, {n,}, {n,m}</code></td>
+<td>限定符</td>
+</tr>
+<tr>
+<td><code>^, $, \任何元字符、任何字符</code></td>
+<td>定位点和序列（即：位置和顺序）</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>替换&quot;或&quot;操作， 字符具有高于替换运算符的优先级，使得&quot;m丨food&quot;匹配&quot;m&quot;或&quot;food&quot;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="匹配规则">匹配规则</h2>
+<p><strong>基本模式匹配</strong></p>
+<p><code>^once</code> 只匹配那些以once开头的字符串<br>
+<code>bucket$</code> 与&quot;buckets&quot;不匹配<br>
+<code>^bucket$</code> 字符 ^ 和 $ 同时使用时，表示精确匹配（字符串与模式一样）,只匹配字符串&quot;bucket&quot;</p>
+<p><strong>字符簇</strong></p>
+<table>
+<thead>
+<tr>
+<th>字符簇</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[AaEeIiOoUu]</code></td>
+<td>任何元音字符</td>
+</tr>
+<tr>
+<td><code>[a-z]</code></td>
+<td>所有的小写字母</td>
+</tr>
+<tr>
+<td><code>[A-Z]</code></td>
+<td>匹配所有的大写字母</td>
+</tr>
+<tr>
+<td><code>[a-zA-Z]</code></td>
+<td>匹配所有的字母</td>
+</tr>
+<tr>
+<td><code>[0-9</code>]</td>
+<td>匹配所有的数字</td>
+</tr>
+<tr>
+<td><code>[0-9\.\-]</code></td>
+<td>匹配所有的数字，句号和减号</td>
+</tr>
+<tr>
+<td><code>[ \f\r\t\n]</code></td>
+<td>匹配所有的白字符</td>
+</tr>
+<tr>
+<td><code>[^a-z]</code></td>
+<td>除了小写字母以外的所有字符</td>
+</tr>
+<tr>
+<td><code>[^\\\/\^]</code></td>
+<td>除了(\)(/)(^)之外的所有字符</td>
+</tr>
+<tr>
+<td><code>[^\&quot;\']</code></td>
+<td>除了双引号(&quot;)和单引号(')之外的所有字符</td>
+</tr>
+</tbody>
+</table>
+<p><strong>确定重复出现</strong></p>
+<table>
+<thead>
+<tr>
+<th>字符簇</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^[a-zA-Z_]$</code></td>
+<td>所有的字母和下划线</td>
+</tr>
+<tr>
+<td><code>^a$</code></td>
+<td>字母a</td>
+</tr>
+<tr>
+<td><code>^a{4}$</code></td>
+<td>aaaa</td>
+</tr>
+<tr>
+<td><code>^a{2,4}$</code></td>
+<td>aa,aaa或aaaa</td>
+</tr>
+<tr>
+<td><code>^a{1,3}$</code></td>
+<td>a,aa或aaa</td>
+</tr>
+<tr>
+<td><code>^a{2,}$</code></td>
+<td>包含多于两个a的字符串</td>
+</tr>
+<tr>
+<td><code>^a{2,}</code></td>
+<td>如：aardvark和aaab，但apple不行</td>
+</tr>
+<tr>
+<td><code>a{2,}</code></td>
+<td>如：baad和aaa，但Nantucket不行</td>
+</tr>
+<tr>
+<td><code>\t{2}</code></td>
+<td>两个制表符</td>
+</tr>
+<tr>
+<td><code>.{2}</code></td>
+<td>所有的两个字符</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>一个数字<code>{x}</code>的意思是前面的字符或字符簇只出现x次</li>
+<li>一个数字加逗号<code>{x,}</code>的意思是前面的内容出现x或更多的次数</li>
+<li>两个数字用逗号分隔的数字<code>{x,y}</code>表示 前面的内容至少出现x次，但不超过y次</li>
+</ul>
+<p>例如</p>
+<table>
+<thead>
+<tr>
+<th>字符簇</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^[a-zA-Z0-9_]{1,}$</code></td>
+<td>所有包含一个以上的字母、数字或下划线的字符串</td>
+</tr>
+<tr>
+<td><code>^[1-9][0-9]{0,}$</code></td>
+<td>所有的正整数</td>
+</tr>
+<tr>
+<td><code>^\-{0,1}[0-9]{1,}$</code></td>
+<td>所有的整数</td>
+</tr>
+<tr>
+<td><code>^[-]?[0-9]+\.?[0-9]+$</code></td>
+<td>所有的浮点数</td>
+</tr>
+</tbody>
+</table>
+<p>最后一个例子：</p>
+<ul>
+<li>以一个可选的负号 <code>([-]?)</code> 开头 <code>(^)</code></li>
+<li>跟着1个或更多的数字<code>([0-9]+)</code></li>
+<li>和一个小数点<code>(\.)</code></li>
+<li>再跟上1个或多个数字<code>([0-9]+)</code></li>
+<li>并且后面没有其他任何东西<code>($)</code></li>
+<li>特殊字符<code>?</code>与<code>{0,1}</code>是相等的，它们都代表着：0个或1个前面的内容 或 前面的内容是可选的</li>
+</ul>
+<p>上表可转化为：</p>
+<table>
+<thead>
+<tr>
+<th>字符簇</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^[a-zA-Z0-9_]+$</code></td>
+<td>所有包含一个以上的字母、数字或下划线的字符串</td>
+</tr>
+<tr>
+<td><code>^[1-9][0-9]*$</code></td>
+<td>所有的正整数</td>
+</tr>
+<tr>
+<td><code>^\-?[0-9]+$</code></td>
+<td>所有的整数</td>
+</tr>
+<tr>
+<td><code>^[-]?[0-9]+(\.[0-9]+)?$</code></td>
+<td>所有的浮点数</td>
+</tr>
+</tbody>
+</table>
+
+    </body>
+    </html>
